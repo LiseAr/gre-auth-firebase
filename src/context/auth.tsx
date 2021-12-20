@@ -83,19 +83,23 @@ const AuthProvider: FC = ({ children }) => {
   const signIn = async ({ name, email, password }: SignInData) => {
     try {
       await signInRequest({ name, email, password });
-      let token = '';
-      if (auth) {
-        token = auth.currentUser.accessToken;
+
+      if (auth?.currentUser) {
+        const _user = auth.currentUser;
+        const token = await _user.getIdToken();
+
         const user = {
-          name: auth.currentUser.displayName,
-          email: auth.currentUser.email,
+          name: _user.displayName,
+          email: _user.email,
         }
+
+        setCookie(undefined, 'gre.token', token, {
+          maxAge: 60 * 60 * 1, // 1 hour
+        })
+
+        setUser(user)
       }
 
-      setCookie(undefined, 'gre.token', token, {
-        maxAge: 60 * 60 * 1, // 1 hour
-      })
-      setUser(user)
       Router.push('/dashboard');
     } catch (error) {
       throw new Error(error.message);
