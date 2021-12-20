@@ -23,13 +23,15 @@ const auth = getAuth(app)
 export const loginRequest = async ({email, password}: LoginRequestData) => {
   try {
     const response = await signInWithEmailAndPassword(auth, email, password)
-    
-    if (response.user && response.user.accessToken){
+    const token = await response.user.getIdToken();
+    const user = response.user;
+
+    if (response.user && token){
       return {
-        token: response.user.accessToken,
+        token: token,
         user: {
-          name: response.user.displayName,
-          email: response.user.email
+          name: user.displayName,
+          email: user.email
         }
       }
     }
@@ -49,7 +51,7 @@ export async function logoutRequest() {
 
 export async function signInRequest({name, email, password}: SignInRequestData) {
   try {
-    const result = await createUserWithEmailAndPassword(auth, email, password)
+    const result = await createUserWithEmailAndPassword(auth, email, password);
     if (result.user){
       try {
         await updateProfile(auth.currentUser, {
