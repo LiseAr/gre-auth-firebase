@@ -1,21 +1,40 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import Head from 'next/head'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import { useAuth } from '../context/auth'
-import { GetServerSideProps } from 'next'
-import { parseCookies } from 'nookies'
+import Users from './Users'
 
-const navigation = ['Dashboard', 'Team', 'Projects', 'Calendar', 'Reports']
+const navigation = [
+  'Dashboard', 'Users', 'Service', 'Calendar', 'Reports'
+]
+
 const profile = ['Your Profile', 'Settings']
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Dashboard() {
+export default function Dashboard({ children }) {
 
-  const { user, logout } = useAuth()
+  const [section, setSection] = useState('Dashboard');
+
+  const renderSection = () => {
+    switch (section) {
+      case 'Dashboard':
+        return (
+          <div className="px-4 py-6 sm:px-0">
+            <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
+          </div>
+        );
+        break;
+      case 'Users':
+        return <Users />;
+        break;
+
+      default:
+        break;
+    }
+  }
 
   return (
     <div>
@@ -39,18 +58,25 @@ export default function Dashboard() {
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
                       {navigation.map((item, itemIdx) =>
-                        itemIdx === 0 ? (
+                        item === section ? (
                           <Fragment key={item}>
                             {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                            <a href="#" className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">
+                            <a
+                              onClick={() => {
+                                setSection(item)
+                              }}
+                              className="cursor-pointer bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                            >
                               {item}
                             </a>
                           </Fragment>
                         ) : (
                           <a
                             key={item}
-                            href="#"
-                            className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                            onClick={() => {
+                              setSection(item)
+                            }}
+                            className="cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                           >
                             {item}
                           </a>
@@ -75,7 +101,7 @@ export default function Dashboard() {
                               <span className="sr-only">Open user menu</span>
                               <img
                                 className="h-8 w-8 rounded-full"
-                                src="https://github.com/lisear.png"
+                                src="https://github.com/diego3g.png"
                                 alt=""
                               />
                             </Menu.Button>
@@ -112,7 +138,6 @@ export default function Dashboard() {
                               <Menu.Item>
                                 <a
                                   href="#"
-                                  onClick={logout}
                                   className='block px-4 py-2 text-sm text-gray-700'
                                 >
                                   Sign out
@@ -142,21 +167,30 @@ export default function Dashboard() {
             <Disclosure.Panel className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 {navigation.map((item, itemIdx) =>
-                  itemIdx === 0 ? (
-                    <Fragment key={item}>
-                      {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                      <a href="#" className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">
+                  item === section ? (
+                    <Disclosure.Button className="block w-full text-left">
+                      <a
+                        onClick={() => {
+                          setSection(item)
+                        }}
+                        className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+                      >
                         {item}
                       </a>
-                    </Fragment>
+                      {/* </Fragment> */}
+                    </Disclosure.Button>
                   ) : (
-                    <a
-                      key={item}
-                      href="#"
-                      className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-                    >
-                      {item}
-                    </a>
+                    <Disclosure.Button className="block w-full text-left">
+                      <a
+                        key={item}
+                        onClick={() => {
+                          setSection(item)
+                        }}
+                        className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                      >
+                        {item}
+                      </a>
+                    </Disclosure.Button>
                   )
                 )}
               </div>
@@ -165,13 +199,13 @@ export default function Dashboard() {
                   <div className="flex-shrink-0">
                     <img
                       className="h-10 w-10 rounded-full"
-                      src="https://github.com/lisear.png"
+                      src="https://github.com/diego3g.png"
                       alt=""
                     />
                   </div>
                   <div className="ml-3">
-                    <div className="text-base font-medium leading-none text-white">{user?.name}</div>
-                    <div className="text-sm font-medium leading-none text-gray-400">{user?.email}</div>
+                    <div className="text-base font-medium leading-none text-white">Diego Fernandes</div>
+                    <div className="text-sm font-medium leading-none text-gray-400">diego@rocketseat.com.br</div>
                   </div>
                   <button className="ml-auto bg-gray-800 flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                     <span className="sr-only">View notifications</span>
@@ -190,7 +224,6 @@ export default function Dashboard() {
                   ))}
                   <a
                     href="#"
-                    onClick={logout}
                     className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
                   >
                     Sign out
@@ -209,30 +242,12 @@ export default function Dashboard() {
       </header>
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          {/* Replace with your content */}
-          <div className="px-4 py-6 sm:px-0">
+          {renderSection()}
+          {/* <div className="px-4 py-6 sm:px-0">
             <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
-          </div>
-          {/* /End replace */}
+          </div> */}
         </div>
       </main>
     </div>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { ['gre.token']: token } = parseCookies(ctx)
-
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      }
-    }
-  }
-
-  return {
-    props: {}
-  }
 }
