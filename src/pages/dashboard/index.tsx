@@ -4,6 +4,10 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import Users from './Users'
 
+import { useAuth } from '../../context/auth'
+import { GetServerSideProps } from 'next'
+import { parseCookies } from 'nookies'
+
 const navigation = [
   'Dashboard', 'Users', 'Service', 'Calendar', 'Reports'
 ]
@@ -15,6 +19,8 @@ function classNames(...classes) {
 }
 
 export default function Dashboard({ children }) {
+
+  const { user, logout } = useAuth()
 
   const [section, setSection] = useState('Dashboard');
 
@@ -101,7 +107,7 @@ export default function Dashboard({ children }) {
                               <span className="sr-only">Open user menu</span>
                               <img
                                 className="h-8 w-8 rounded-full"
-                                src="https://github.com/diego3g.png"
+                                src="https://github.com/lisear.png"
                                 alt=""
                               />
                             </Menu.Button>
@@ -138,6 +144,7 @@ export default function Dashboard({ children }) {
                               <Menu.Item>
                                 <a
                                   href="#"
+                                  onClick={logout}
                                   className='block px-4 py-2 text-sm text-gray-700'
                                 >
                                   Sign out
@@ -164,6 +171,7 @@ export default function Dashboard({ children }) {
               </div>
             </div>
 
+            {/* Menu responsivo app */}
             <Disclosure.Panel className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 {navigation.map((item, itemIdx) =>
@@ -199,13 +207,13 @@ export default function Dashboard({ children }) {
                   <div className="flex-shrink-0">
                     <img
                       className="h-10 w-10 rounded-full"
-                      src="https://github.com/diego3g.png"
+                      src="https://github.com/lisear.png"
                       alt=""
                     />
                   </div>
                   <div className="ml-3">
-                    <div className="text-base font-medium leading-none text-white">Diego Fernandes</div>
-                    <div className="text-sm font-medium leading-none text-gray-400">diego@rocketseat.com.br</div>
+                    <div className="text-base font-medium leading-none text-white">{user?.name}</div>
+                    <div className="text-sm font-medium leading-none text-gray-400">{user?.email}</div>
                   </div>
                   <button className="ml-auto bg-gray-800 flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                     <span className="sr-only">View notifications</span>
@@ -224,6 +232,7 @@ export default function Dashboard({ children }) {
                   ))}
                   <a
                     href="#"
+                    onClick={logout}
                     className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
                   >
                     Sign out
@@ -243,11 +252,25 @@ export default function Dashboard({ children }) {
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           {renderSection()}
-          {/* <div className="px-4 py-6 sm:px-0">
-            <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
-          </div> */}
         </div>
       </main>
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { ['gre.token']: token } = parseCookies(ctx)
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
 }
