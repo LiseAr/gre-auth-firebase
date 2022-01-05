@@ -14,7 +14,7 @@ export default function Notification({ closeDialog, title, description }) {
         aria-live="assertive"
         className="fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start"
       >
-        <div className="w-full flex flex-col items-center space-y-4 sm:items-end">
+        <div className="w-full h-full flex flex-col items-center space-y-4 sm:items-end justify-end">
           {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
           <Transition
             show={show}
