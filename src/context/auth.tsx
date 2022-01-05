@@ -69,7 +69,7 @@ const AuthProvider: FC = ({ children }) => {
           maxAge: 60 * 60 * 1, // 1 hour
         })
       setUser(user)
-      Router.push('/dashboard');
+      Router.push('/');
     } catch (error) {
       throw new Error("Error: User not exists");
     }
