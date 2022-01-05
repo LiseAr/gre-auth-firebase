@@ -160,7 +160,7 @@ const JobStep = ({ handleNextStep, handleBack }) => {
                       <button
                         type="submit"
                         className="flex align-center justify-center py-1 px-4 border border-transparent shadow-sm text-md font-bold rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none"
-                        onClick={addService}
+                        onClick={() => addService}
                       >
                         +
                       </button>
