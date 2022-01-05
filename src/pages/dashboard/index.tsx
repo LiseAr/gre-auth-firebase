@@ -1,18 +1,36 @@
-import { Fragment, useState } from 'react'
+import Link from 'next/link'
+import { Fragment, useCallback, useState } from 'react'
+import { GetServerSideProps } from 'next'
+import { parseCookies } from 'nookies'
 import Head from 'next/head'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import Users from './Users'
 
 import { useAuth } from '../../context/auth'
-import { GetServerSideProps } from 'next'
-import { parseCookies } from 'nookies'
+import { CLink } from '../../components/CLink'
+import ButtonDropDown from '../../components/ButtonDropDown/Index'
 
 const navigation = [
-  'Dashboard', 'Users', 'Service', 'Calendar', 'Reports'
+  {
+    name: 'Home',
+    route: 'home'
+  },
+  {
+    name: 'Usuários',
+    route: 'users'
+  },
+  {
+    name: 'Serviço',
+    route: 'jobs'
+  },
 ]
 
-const profile = ['Your Profile', 'Settings']
+const profile = [
+  {
+    name: 'Settings',
+    route: 'settings'
+  }
+]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -24,28 +42,11 @@ export default function Dashboard({ children }) {
 
   const [section, setSection] = useState('Dashboard');
 
-  const renderSection = () => {
-    switch (section) {
-      case 'Dashboard':
-        return (
-          <div className="px-4 py-6 sm:px-0">
-            <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
-          </div>
-        );
-        break;
-      case 'Users':
-        return <Users />;
-        break;
-
-      default:
-        break;
-    }
-  }
 
   return (
     <div>
       <Head>
-        <title>Dashboard</title>
+        <title>{section}</title>
       </Head>
 
       <Disclosure as="nav" className="bg-gray-800">
@@ -64,28 +65,30 @@ export default function Dashboard({ children }) {
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
                       {navigation.map((item, itemIdx) =>
-                        item === section ? (
-                          <Fragment key={item}>
-                            {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
+                        item.name === section ? (
+                          <Fragment key={item.route}>
                             <a
+
                               onClick={() => {
-                                setSection(item)
+                                setSection(item.name)
                               }}
                               className="cursor-pointer bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                             >
-                              {item}
+                              {item.name}
                             </a>
                           </Fragment>
                         ) : (
-                          <a
-                            key={item}
-                            onClick={() => {
-                              setSection(item)
-                            }}
-                            className="cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                          >
-                            {item}
-                          </a>
+                          <Link href={item.route}>
+                            <a
+                              key={item.route}
+                              onClick={() => {
+                                setSection(item.name)
+                              }}
+                              className="cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                            >
+                              {item.name}
+                            </a>
+                          </Link>
                         )
                       )}
                     </div>
@@ -93,11 +96,11 @@ export default function Dashboard({ children }) {
                 </div>
                 <div className="hidden md:block">
                   <div className="ml-4 flex items-center md:ml-6">
+                    <ButtonDropDown />
                     <button className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                       <span className="sr-only">View notifications</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
-
                     {/* Profile dropdown */}
                     <Menu as="div" className="ml-3 relative">
                       {({ open }) => (
@@ -124,28 +127,27 @@ export default function Dashboard({ children }) {
                           >
                             <Menu.Items
                               static
-                              className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                              className="cursor-pointer origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                             >
                               {profile.map((item) => (
-                                <Menu.Item key={item}>
+                                <Menu.Item key={item.route}>
                                   {({ active }) => (
-                                    <a
-                                      href="#"
+                                    <CLink
+                                      href={item.route}
                                       className={classNames(
                                         active ? 'bg-gray-100' : '',
-                                        'block px-4 py-2 text-sm text-gray-700'
+                                        'cursor-pointer block px-4 py-2 text-sm text-gray-700'
                                       )}
                                     >
-                                      {item}
-                                    </a>
+                                      {item.name}
+                                    </CLink>
                                   )}
                                 </Menu.Item>
                               ))}
                               <Menu.Item>
                                 <a
-                                  href="#"
                                   onClick={logout}
-                                  className='block px-4 py-2 text-sm text-gray-700'
+                                  className='cursor-pointer block px-4 py-2 text-sm text-gray-700'
                                 >
                                   Sign out
                                 </a>
@@ -175,28 +177,28 @@ export default function Dashboard({ children }) {
             <Disclosure.Panel className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 {navigation.map((item, itemIdx) =>
-                  item === section ? (
+                  item.name === section ? (
                     <Disclosure.Button className="block w-full text-left">
                       <a
                         onClick={() => {
-                          setSection(item)
+                          setSection(item.name)
                         }}
                         className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
                       >
-                        {item}
+                        {item.name}
                       </a>
                       {/* </Fragment> */}
                     </Disclosure.Button>
                   ) : (
                     <Disclosure.Button className="block w-full text-left">
                       <a
-                        key={item}
+                        key={item.route}
                         onClick={() => {
-                          setSection(item)
+                          setSection(item.name)
                         }}
                         className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                       >
-                        {item}
+                        {item.name}
                       </a>
                     </Disclosure.Button>
                   )
@@ -223,11 +225,11 @@ export default function Dashboard({ children }) {
                 <div className="mt-3 px-2 space-y-1">
                   {profile.map((item) => (
                     <a
-                      key={item}
+                      key={item.route}
                       href="#"
                       className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
                     >
-                      {item}
+                      {item.name}
                     </a>
                   ))}
                   <a
@@ -245,13 +247,10 @@ export default function Dashboard({ children }) {
       </Disclosure>
 
       <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        </div>
       </header>
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          {renderSection()}
+          {children}
         </div>
       </main>
     </div>
@@ -264,7 +263,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (!token) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/login',
         permanent: false,
       }
     }
