@@ -21,18 +21,19 @@ const ClientStep = ({ handleNextStep, handleBack }) => {
 
   const { register, handleSubmit, formState: { errors } } = useForm()
 
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState(
+    {
+      tag: 'existent',
+      name: 'Cliente já existe',
+      description: 'Selecionar da base de dados',
+    }
+  );
 
   const _handleSubmit = (data) => {
     console.log(data);
 
     handleNextStep();
   }
-
-  useEffect(() => {
-    console.log(errors);
-
-  }, [errors]);
 
   return (
     <>
@@ -56,10 +57,10 @@ const ClientStep = ({ handleNextStep, handleBack }) => {
                     <RadioGroup value={selected} onChange={setSelected}>
                       <RadioGroup.Label className="sr-only">Client</RadioGroup.Label>
                       <div className="space-y-2">
-                        {options.map((plan) => (
+                        {options.map((option) => (
                           <RadioGroup.Option
-                            key={plan.name}
-                            value={plan}
+                            key={option.name}
+                            value={option}
                             className={({ active, checked }) => `
                   relative rounded-lg shadow-md px-5 py-4 cursor-pointer flex focus:outline-none text-black
                   ${active ? 'ring-2 ring-indigo-500' : ''}
@@ -76,7 +77,7 @@ const ClientStep = ({ handleNextStep, handleBack }) => {
                                         className={`${checked ? 'font-bold text-white' : 'font-medium  text-gray-900'
                                           }`}
                                       >
-                                        {plan.name}
+                                        {option.name}
                                       </RadioGroup.Label>
                                       <RadioGroup.Description
                                         as="span"
@@ -84,7 +85,7 @@ const ClientStep = ({ handleNextStep, handleBack }) => {
                                           }`}
                                       >
                                         <span>
-                                          {plan.description}
+                                          {option.description}
                                         </span>
                                       </RadioGroup.Description>
                                     </div>
@@ -104,7 +105,7 @@ const ClientStep = ({ handleNextStep, handleBack }) => {
                   </div>
                 </div>
               </div>
-              {selected?.tag === 'existent'
+              {selected.tag === 'existent'
                 &&
                 <div className="">
 
