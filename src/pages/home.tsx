@@ -1,4 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
+import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies';
 import { service as ServiceIcon } from '../assets/images/svg/service'
 
 const actions = [
@@ -50,4 +52,21 @@ export default function Home() {
       </ul>
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { ['gre.token']: token } = parseCookies(ctx)
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
 }

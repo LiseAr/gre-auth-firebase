@@ -127,6 +127,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         permanent: false,
       }
     }
+  } else {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      }
+    }
   }
 
   return {
