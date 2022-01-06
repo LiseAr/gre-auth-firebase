@@ -1,4 +1,4 @@
-import Link from "next/link"
+import LinkNext from "next/link"
 
 {
   /* 
@@ -6,13 +6,13 @@ import Link from "next/link"
     to avoid re-rendering the panel
   */
 }
-const CLink = (props) => {
+const Link = (props) => {
   let { href, children, ...rest } = props
   return (
-    <Link href={href}>
+    <LinkNext href={href}>
       <a {...rest}>{children}</a>
-    </Link>
+    </LinkNext>
   )
 }
 
-export { CLink }
+export { Link }

@@ -21,12 +21,6 @@ const JobStep = ({ handleNextStep, handleBack }) => {
 
   const addService = (data: SubmitData) => {
 
-    console.log('addService');
-    console.log('services');
-    console.log(services);
-    console.log('data');
-    console.log(data);
-
     if (data.description) {
 
       const service: ServiceType = {

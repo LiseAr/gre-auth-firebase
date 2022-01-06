@@ -4,7 +4,7 @@ import { useAuth } from '../context/auth'
 import { GetServerSideProps } from 'next'
 import Router from 'next/router'
 import { useState } from 'react'
-import Notification from '../components/Notification'
+import Notification from '../components/elements/Notification'
 import { parseCookies } from 'nookies'
 
 export default function Login() {

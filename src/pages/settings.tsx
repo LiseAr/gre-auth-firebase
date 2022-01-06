@@ -37,6 +37,8 @@ import {
   ViewGridAddIcon,
   XIcon,
 } from '@heroicons/react/outline'
+import { GetServerSideProps } from 'next'
+import { parseCookies } from 'nookies'
 
 const user = {
   name: 'Debbie Lewis',
@@ -403,4 +405,21 @@ export default function Settings() {
       </div>
     </div >
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { ['gre.token']: token } = parseCookies(ctx)
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
 }

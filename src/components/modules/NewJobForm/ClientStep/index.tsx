@@ -1,7 +1,7 @@
 import { RadioGroup } from "@headlessui/react"
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Select } from "../../Select";
+import { Select } from "../../../elements/Select";
 
 const options = [
   {

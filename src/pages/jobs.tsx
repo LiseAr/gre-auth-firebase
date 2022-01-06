@@ -1,4 +1,4 @@
-import Table from '../../components/Table'
+import Table from '../components/elements/Table'
 
 const people = [
   { name: 'Jane Cooper', title: 'Regional Paradigm Technician', role: 'Admin', email: 'jane.cooper@example.com' },
