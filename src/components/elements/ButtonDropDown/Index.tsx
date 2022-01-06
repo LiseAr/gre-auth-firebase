@@ -1,7 +1,7 @@
+import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useRef, useState } from 'react'
-import { ChevronDownIcon, PlusIcon } from '@heroicons/react/solid'
-import { CLink } from '../CLink'
+import { PlusIcon } from '@heroicons/react/solid'
+import { Link } from '../Link'
 
 export default function ButtonDropDown() {
   return (
@@ -28,7 +28,7 @@ export default function ButtonDropDown() {
             <div className="px-1 py-1 ">
               <Menu.Item>
                 {({ active }) => (
-                  <CLink
+                  <Link
                     href={'/newjob'}
                     className={`${active ? 'bg-violet-500 text-gray-600' : 'text-gray-900'
                       } group flex rounded-md items-center w-full px-2 py-2 text-md font-bold`}
@@ -45,7 +45,7 @@ export default function ButtonDropDown() {
                       />
                     )}
                     Serviço
-                  </CLink>
+                  </Link>
                 )}
               </Menu.Item>
               <Menu.Item>

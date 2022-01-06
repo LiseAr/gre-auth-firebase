@@ -3,7 +3,7 @@ import { LockClosedIcon } from '@heroicons/react/solid'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../context/auth'
 import { useState } from 'react';
-import Notification from '../components/Notification';
+import Notification from '../components/elements/Notification';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
 

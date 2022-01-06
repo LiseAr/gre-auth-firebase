@@ -1,13 +1,15 @@
 import 'tailwindcss/tailwind.css'
+import ThemeOne from '../components/layouts/ThemeOne'
 import { AuthProvider } from '../context/auth'
-import Dashboard from './dashboard'
+// import Dashboard from './dashboard'
+
 
 function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>
-      <Dashboard>
+      <ThemeOne>
         <Component {...pageProps} />
-      </Dashboard>
+      </ThemeOne>
     </AuthProvider>
   )
 }

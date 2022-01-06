@@ -1,14 +1,12 @@
-import Link from 'next/link'
-import { Fragment, useCallback, useState } from 'react'
-import { GetServerSideProps } from 'next'
-import { parseCookies } from 'nookies'
+import NextLink from 'next/link'
+import { Fragment, useState } from 'react'
 import Head from 'next/head'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 
-import { useAuth } from '../../context/auth'
-import { CLink } from '../../components/CLink'
-import ButtonDropDown from '../../components/ButtonDropDown/Index'
+import { useAuth } from '../../../context/auth'
+import { Link } from '../../elements/Link'
+import ButtonDropDown from '../../elements/ButtonDropDown/Index'
 
 const navigation = [
   {
@@ -36,7 +34,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Dashboard({ children }) {
+export default function ThemeOne({ children }) {
 
   const { user, logout } = useAuth()
 
@@ -78,7 +76,7 @@ export default function Dashboard({ children }) {
                             </a>
                           </Fragment>
                         ) : (
-                          <Link href={item.route}>
+                          <NextLink href={item.route}>
                             <a
                               key={item.route}
                               onClick={() => {
@@ -88,7 +86,7 @@ export default function Dashboard({ children }) {
                             >
                               {item.name}
                             </a>
-                          </Link>
+                          </NextLink>
                         )
                       )}
                     </div>
@@ -132,7 +130,7 @@ export default function Dashboard({ children }) {
                               {profile.map((item) => (
                                 <Menu.Item key={item.route}>
                                   {({ active }) => (
-                                    <CLink
+                                    <Link
                                       href={item.route}
                                       className={classNames(
                                         active ? 'bg-gray-100' : '',
@@ -140,7 +138,7 @@ export default function Dashboard({ children }) {
                                       )}
                                     >
                                       {item.name}
-                                    </CLink>
+                                    </Link>
                                   )}
                                 </Menu.Item>
                               ))}
@@ -246,8 +244,8 @@ export default function Dashboard({ children }) {
         )}
       </Disclosure>
       }
-      <header className="bg-white shadow">
-      </header>
+      {/* <header className="bg-white shadow">
+        </header> */}
       <main>
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           {children}
@@ -255,21 +253,4 @@ export default function Dashboard({ children }) {
       </main>
     </div>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { ['gre.token']: token } = parseCookies(ctx)
-
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      }
-    }
-  }
-
-  return {
-    props: {}
-  }
 }

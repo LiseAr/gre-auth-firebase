@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Collapse } from "../Collapse"
+import { Collapse } from "../../elements/Collapse"
 import { RadioGroup } from '@headlessui/react'
-import { Select } from "../Select"
+import { Select } from "../../elements/Select"
 import { ClientStep } from "./ClientStep";
 import { JobStep } from "./JobStep";
 
@@ -18,7 +18,7 @@ const options = [
   },
 ];
 
-const Form = () => {
+const NewJobForm = () => {
 
   const [selected, setSelected] = useState();
   const [step, setStep] = useState(1);
@@ -57,4 +57,4 @@ const Form = () => {
   )
 }
 
-export { Form }
+export { NewJobForm }

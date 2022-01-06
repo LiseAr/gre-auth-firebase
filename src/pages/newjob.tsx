@@ -1,9 +1,9 @@
-import { Form } from "../components/NewJobForm";
+import { NewJobForm } from "../components/modules/NewJobForm";
 
-export default function NewService() {
+export default function NewJob() {
   return (
     <div>
-      <Form />
+      <NewJobForm />
     </div>
   )
 }
