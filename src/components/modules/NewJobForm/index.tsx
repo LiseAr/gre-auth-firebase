@@ -26,33 +26,18 @@ const NewJobForm = () => {
   return (
     <div className="space-y-6">
 
-      <Collapse
-        title='Cliente'
-        state={step === 1 ? 'collapse-open' : 'collapse-close'}
-      >
-        <ClientStep
-          handleNextStep={() => {
-            setStep(step + 1)
-          }}
-          handleBack={() => {
-            setStep(step - 1)
-          }}
-        />
-      </Collapse>
-      <Collapse
-        title='Descrição do Serviço'
-        state={step === 2 ? 'collapse-open' : 'collapse-close'}
-      >
-        <JobStep
-          handleNextStep={() => {
-            setStep(step + 1)
-          }}
-          handleBack={() => {
-            setStep(step - 1)
-          }}
-        />
+      <ClientStep
+        handleNextStep={() => setStep(step + 1)}
+        handleBack={() => setStep(step - 1)}
+        collapseState={step === 1 ? 'collapse-open' : 'collapse-close'}
+      />
 
-      </Collapse>
+      <JobStep
+        handleNextStep={() => setStep(step + 1)}
+        handleBack={() => setStep(step - 1)}
+        collapseState={step === 2 ? 'collapse-open' : 'collapse-close'}
+      />
+
     </div >
   )
 }

@@ -12,7 +12,7 @@ const Collapse = ({ title, children, state = 'collapse-close' }) => {
   return (
     <>
       <div
-        className={`collapse ${collapseState} w-full border rounded-box border-base-300`}>
+        className={`z-0 collapse ${collapseState} w-full border rounded-box border-base-300`}>
         <input type="checkbox" />
         <div className="collapse-title text-xl font-medium">
           {title}
