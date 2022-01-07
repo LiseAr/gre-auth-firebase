@@ -1,12 +1,12 @@
 import NextLink from 'next/link'
 import { Fragment, useState } from 'react'
 import Head from 'next/head'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
+import { Disclosure } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 
 import { useAuth } from '../../../context/auth'
-import { Link } from '../../elements/Link'
-import ButtonDropDown from '../../elements/ButtonDropDown/Index'
+import { FastTools } from '../../modules/FastTools'
+import { ProfileDropDown } from '../../modules/ProfileDropDown'
 
 const navigation = [
   {
@@ -47,7 +47,7 @@ export default function ThemeOne({ children }) {
         <title>{section}</title>
       </Head>
 
-      {user && <Disclosure as="nav" className="bg-gray-800">
+      {user && <Disclosure as="nav" className="bg-gray-800 z-50">
         {({ open }) => (
           <>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -94,67 +94,12 @@ export default function ThemeOne({ children }) {
                 </div>
                 <div className="hidden md:block">
                   <div className="ml-4 flex items-center md:ml-6">
-                    <ButtonDropDown />
-                    <button className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                    <FastTools />
+                    <button className="ml-8 mr-2 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                       <span className="sr-only">View notifications</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
-                    {/* Profile dropdown */}
-                    <Menu as="div" className="ml-3 relative">
-                      {({ open }) => (
-                        <>
-                          <div>
-                            <Menu.Button className="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                              <span className="sr-only">Open user menu</span>
-                              <img
-                                className="h-8 w-8 rounded-full"
-                                src="https://github.com/lisear.png"
-                                alt=""
-                              />
-                            </Menu.Button>
-                          </div>
-                          <Transition
-                            show={open}
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
-                          >
-                            <Menu.Items
-                              static
-                              className="cursor-pointer origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                            >
-                              {profile.map((item) => (
-                                <Menu.Item key={item.route}>
-                                  {({ active }) => (
-                                    <Link
-                                      href={item.route}
-                                      className={classNames(
-                                        active ? 'bg-gray-100' : '',
-                                        'cursor-pointer block px-4 py-2 text-sm text-gray-700'
-                                      )}
-                                    >
-                                      {item.name}
-                                    </Link>
-                                  )}
-                                </Menu.Item>
-                              ))}
-                              <Menu.Item>
-                                <a
-                                  onClick={logout}
-                                  className='cursor-pointer block px-4 py-2 text-sm text-gray-700'
-                                >
-                                  Sign out
-                                </a>
-                              </Menu.Item>
-                            </Menu.Items>
-                          </Transition>
-                        </>
-                      )}
-                    </Menu>
+                    <ProfileDropDown />
                   </div>
                 </div>
                 <div className="-mr-2 flex md:hidden">
@@ -247,7 +192,7 @@ export default function ThemeOne({ children }) {
       {/* <header className="bg-white shadow">
         </header> */}
       <main>
-        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div className={user ? 'max-w-7xl mx-auto py-6 sm:px-6 lg:px-8' : ''}>
           {children}
         </div>
       </main>
